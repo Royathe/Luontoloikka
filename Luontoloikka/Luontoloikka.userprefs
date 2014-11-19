@@ -1,0 +1,16 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GameController.cs">
+    <Files>
+      <File FileName="Assets\Scripts\GameController.cs" Line="194" Column="55" />
+      <File FileName="Assets\Scripts\centerTile.cs" Line="6" Column="27" />
+      <File FileName="Assets\Scripts\addTile.cs" Line="13" Column="27" />
+      <File FileName="Assets\Scripts\tile.cs" Line="12" Column="27" />
+      <File FileName="Assets\Scripts\touchInput.cs" Line="11" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
