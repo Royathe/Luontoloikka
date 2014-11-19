@@ -188,13 +188,9 @@ public class GameController: MonoBehaviour {
 		//ct.taskText = "\t";
 		
 		//Instantiates Bags
-		Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(60, 80, 10));
+		Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(50, 65, 10));
 		Instantiate (greenBagSprite, worldPoint, rotation);
-		
-		//worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(150, 60, 10));
 		Instantiate (redBagSprite, worldPoint, rotation);
-		
-		//worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(260, 60, 10));
 		Instantiate (yellowBagSprite, worldPoint, rotation);
 		
 		//Instantiates Home Cave image
@@ -319,22 +315,18 @@ public class GameController: MonoBehaviour {
 		
 		if (centerTileY + 5 > map.GetLength(1)) //Checks if center piece is approaching the edge of the map
 		{
-			Debug.Log ("Map Y Expansion ran");
 			expandMap("up",5);
 		}
 		else if (centerTileX + 5 > map.GetLength(0)) //Checks if center piece is approaching the edge of the map
 		{
-			Debug.Log ("Map X Expansion ran");
 			expandMap("right",5);
 		}
 		else if (centerTileX - 5 < 0) //Checks if center piece is approaching the edge of the map
 		{
-			Debug.Log ("Map X Expansion ran");
 			expandMap("left",5);
 		}
 		else if (centerTileY - 5 < 0) //Checks if center piece is approaching the edge of the map
 		{
-			Debug.Log ("Map Y Expansion ran");
 			expandMap("down",5);
 		}
 		
