@@ -160,10 +160,9 @@ public class GameController: MonoBehaviour {
 			yellowBag[randomIndex] = temp;
 		}
 
-		int index = (int)Random.Range(10, yellowBag.Count);
+		//Inserts Home tile at random location after 5
+		int index = (int)Random.Range(5, yellowBag.Count);
 		yellowBag.Insert (index, gt.homeTile);
-		Debug.Log ("HOME TILE INDEX: " + index);
-		//yellowBag.Add(gt.homeTile);
 
 		greenBagCount.fontSize = Screen.height/12; //Adjusts text size based on resolution
 		redBagCount.fontSize = Screen.height/12; //Adjusts text size based on resolution
