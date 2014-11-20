@@ -152,7 +152,6 @@ public class GameController: MonoBehaviour {
 		yellowBag.Add(gt.snowTile);
 		yellowBag.Add(gt.snowTile);
 		yellowBag.Add(gt.snowTile);
-		yellowBag.Add(gt.homeTile);
 		//Shuffles Yellow Bag
 		for (int i = 0; i < yellowBag.Count; i++) {
 			GameObject temp = yellowBag[i];
@@ -160,6 +159,11 @@ public class GameController: MonoBehaviour {
 			yellowBag[i] = yellowBag[randomIndex];
 			yellowBag[randomIndex] = temp;
 		}
+
+		int index = (int)Random.Range(10, yellowBag.Count);
+		yellowBag.Insert (index, gt.homeTile);
+		Debug.Log ("HOME TILE INDEX: " + index);
+		//yellowBag.Add(gt.homeTile);
 
 		greenBagCount.fontSize = Screen.height/12; //Adjusts text size based on resolution
 		redBagCount.fontSize = Screen.height/12; //Adjusts text size based on resolution
