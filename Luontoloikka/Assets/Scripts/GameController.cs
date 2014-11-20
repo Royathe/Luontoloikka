@@ -62,6 +62,7 @@ public class GameController: MonoBehaviour {
 	public List<GameObject> yellowBag; //Bag from which tiles are selected
 	public List<string> FlavorList; //Flavor texts currently being used
 	public List<string> TaskList; //Task texts currently being used
+	public List<string> GraphicList; //Task texts currently being used
 	private generateTiles gt; //Reference to Generate Tiles class
 	private rotateImage ri; //Reference to Rotate Image class
 	private centerTile ct; //Reference to Center Tile class
@@ -229,14 +230,17 @@ public class GameController: MonoBehaviour {
 		case "green":
 			FlavorList = gt.GTFlavorList;
 			TaskList = gt.GTTaskList;
+			GraphicList = gt.GTGraphicList;
 			break;
 		case "red":
 			FlavorList = gt.RTFlavorList;
 			TaskList = gt.RTTaskList;
+			GraphicList = gt.RTGraphicList;
 			break;
 		case "yellow":
 			FlavorList = gt.YTFlavorList;
 			TaskList = gt.YTTaskList;
+			GraphicList = gt.YTGraphicList;
 			break;
 		}
 	}
@@ -293,8 +297,11 @@ public class GameController: MonoBehaviour {
 			int textSelect = Random.Range (0, FlavorList.Count); //Selects random flavor text task from list
 			ct.flavorText = FlavorList [textSelect]; //Assigns new flavor text
 			ct.taskText = TaskList [textSelect]; //Assigns new flavor text
+			addTileGraphic (GraphicList[textSelect]);
+			Debug.Log (GraphicList[textSelect]);
 			FlavorList.RemoveAt (textSelect); //Removes added flavor text from list
 			TaskList.RemoveAt (textSelect); //Removes added flavor text from list
+			GraphicList.RemoveAt (textSelect); //Removes added flavor text from list
 			
 			if(devEnabled == false){
 				animateText();
@@ -310,6 +317,17 @@ public class GameController: MonoBehaviour {
 		Destroy(map [(int)centerTileX, (int)centerTileY]);//Removes forest
 		map [(int)centerTileX, (int)centerTileY] = Instantiate (a, pos, rotation) as GameObject; // New tile
 	}
+
+	private void addTileGraphic(string graphicText){
+		switch (graphicText) {
+		
+		case "null":
+			break;
+		
+		}
+	
+	}
+
 	
 	//FUNCTION MOVES ALL MAP OBJECTS ON SCREEN WHEN NEW TILE IS ADDED, KEEPING NEWEST TILE AT CENTER
 	void MapUpdate () {

@@ -16,12 +16,15 @@ public class generateTiles : MonoBehaviour {
 
 	public List<string> GTFlavorList;
 	public List<string> GTTaskList;
+	public List<string> GTGraphicList;
 	
 	public List<string> RTFlavorList;
 	public List<string> RTTaskList;
+	public List<string> RTGraphicList;
 
 	public List<string> YTFlavorList;
 	public List<string> YTTaskList;
+	public List<string> YTGraphicList;
 
 	private StreamReader sr;
 
@@ -35,10 +38,15 @@ public class generateTiles : MonoBehaviour {
 
 		GTFlavorList = new List<string> ();
 		GTTaskList = new List<string> ();
+		GTGraphicList = new List<string> ();
+
 		RTFlavorList = new List<string> ();
 		RTTaskList = new List<string> ();
+		RTGraphicList = new List<string> ();
+
 		YTFlavorList = new List<string> ();
 		YTTaskList = new List<string> ();
+		YTGraphicList = new List<string> ();
 
 		if(Resources.Load ("text") as TextAsset != null){
 			androidReadFile(Resources.Load ("text") as TextAsset);
@@ -61,6 +69,7 @@ public class generateTiles : MonoBehaviour {
 	}
 	private List<string> flavorList;
 	private List<string> taskList;
+	private List<string> graphicList;
 	private List<GameObject> tileList;
 	/*
 	private void setFile(FileInfo f){
@@ -80,18 +89,21 @@ public class generateTiles : MonoBehaviour {
 			if(line[0] == 'V' && line[1] == '\t'){
 				flavorList = GTFlavorList;
 				taskList = GTTaskList;
+				graphicList = GTGraphicList;
 				tileList = greenTileList; 
 				c = 0;
 			}
 			else if(line[0]  == 'P' && line[1] == '\t'){
 				flavorList = RTFlavorList;
 				taskList = RTTaskList;
+				graphicList = RTGraphicList;
 				tileList = redTileList; 
 				c = 0;
 			}
 			else if(line[0]  == 'K' && line[1] == '\t'){
 				flavorList = YTFlavorList;
 				taskList = YTTaskList;
+				graphicList = YTGraphicList;
 				tileList = yellowTileList; 
 				c = 0;
 			}
@@ -108,6 +120,10 @@ public class generateTiles : MonoBehaviour {
 			}
 			else if(c == 1){
 				taskList.Add(line);
+				c = 2;
+			}
+			else if(c == 2){
+				graphicList.Add(line);
 				c = 0;
 			}
 		}
