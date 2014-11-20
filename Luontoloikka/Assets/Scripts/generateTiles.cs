@@ -43,7 +43,7 @@ public class generateTiles : MonoBehaviour {
 		if(Resources.Load ("text") as TextAsset != null){
 			androidReadFile(Resources.Load ("text") as TextAsset);
 		}
-
+		/*
 #if UNITY_STANDALONE_WIN
 		Debug.Log ("RAN UNITY STANDALONE WINDOWS SCRIPT");
 		try{ 
@@ -57,18 +57,18 @@ public class generateTiles : MonoBehaviour {
 			Application.LoadLevel("Menu");
 		}
 #endif
-
+*/
 	}
 	private List<string> flavorList;
 	private List<string> taskList;
 	private List<GameObject> tileList;
-
+	/*
 	private void setFile(FileInfo f){
 		try{ sr = new StreamReader ("Texts/" + f.ToString (), System.Text.Encoding.Unicode);
 		}catch(DirectoryNotFoundException){Debug.Log("Directory Not Found");Application.LoadLevel("Menu");}
 		generateFromFile ();
 	}
-
+*/
 	private void androidReadFile(TextAsset textFile){
 
 		string[] linesFromfile = textFile.text.Split("\n"[0]);
@@ -112,7 +112,7 @@ public class generateTiles : MonoBehaviour {
 			}
 		}
 	}
-
+	/*
 #if UNITY_EDITOR
 	private void generateFromFile(){
 		int c = 0;
@@ -185,4 +185,5 @@ public class generateTiles : MonoBehaviour {
 		sr.Dispose ();
 	}
 #endif
+*/
 }

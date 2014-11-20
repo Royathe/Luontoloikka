@@ -49,8 +49,8 @@ public class GameController: MonoBehaviour {
 	
 	private float offSetX; //Offsets the map so it is centered around a specific tile  
 	private float offSetY; //Offsets the map so it is centered around a specific tile
-	private float getOffSetX(){return ((int)(/*map.GetLength(0) - */centerTileX))*spacing;} //Offsets the map so it is centered around a specific tile
-	private float getOffSetY(){return ((int)(/*map.GetLength (1) - */centerTileY)) * spacing + 0.5f;} //Offsets the map so it is centered around a specific tile
+	private float getOffSetX(){return ((int)(centerTileX)) * spacing;} //Offsets the map so it is centered around a specific tile
+	private float getOffSetY(){return ((int)(centerTileY)) * spacing + 0.5f;} //Offsets the map so it is centered around a specific tile
 	private Vector3 topRightCorner; //Location of the top right corner on the screen
 	
 	public GameObject[,] map; //2D Array for storing tiles
@@ -159,7 +159,11 @@ public class GameController: MonoBehaviour {
 			yellowBag[i] = yellowBag[randomIndex];
 			yellowBag[randomIndex] = temp;
 		}
-		
+
+		greenBagCount.fontSize = Screen.height/12; //Adjusts text size based on resolution
+		redBagCount.fontSize = Screen.height/12; //Adjusts text size based on resolution
+		yellowBagCount.fontSize = Screen.height/12; //Adjusts text size based on resolution
+
 		greenBagCount.text = "" + greenBag.Count; //Sets number shown on top of Bag
 		redBagCount.text = "" + redBag.Count; //Sets number shown on top of Bag
 		yellowBagCount.text = "" + yellowBag.Count; //Sets number shown on top of Bag
@@ -202,7 +206,7 @@ public class GameController: MonoBehaviour {
 		exit.transform.localPosition = worldPoint;
 		
 		textArea.transform.localPosition = new Vector2(0, -5);
-		textArea.GetComponent<textGUI> ().textY = Screen.height;
+		textArea.GetComponent<textGUI> ().textY += Screen.height;
 		
 		forestSnow = GameObject.FindGameObjectWithTag ("forestSnow");
 		forestSnowHeavy = GameObject.FindGameObjectWithTag ("forestSnowHeavy");
@@ -215,7 +219,7 @@ public class GameController: MonoBehaviour {
 		selectedText = greenBagCount;
 		redBagCount.enabled = false;
 		yellowBagCount.enabled = false;
-		bagCountVisible = true;
+		bagCountVisible = false;
 	}
 	
 	//LOADS FLAVOR TEXTS FROM SELECTED BAG FLAVOR TEXT LIST
@@ -479,10 +483,11 @@ public class GameController: MonoBehaviour {
 	private bool bagCountVisible;
 
 	private IEnumerator textAreaAnimation(){
-		float destY = -0.55f;
+		//float destY = -0.55f;
+		float destY = -2;
 		float origY = -5;
 		if(textArea.transform.position.y == origY){ //LIFTS TEXT AREA
-			//bagCountVisible = false;
+			bagCountVisible = false;
 			textArea.GetComponent<textGUI> ().textY -= Screen.height;
 			for(int i = 1; i <= 4; i++){
 				Vector2 newPos = new Vector2(0, (destY/4)*i);
@@ -491,7 +496,7 @@ public class GameController: MonoBehaviour {
 			}
 		}
 		else if(textArea.transform.position.y == destY){ //DROPS TEXT AREA
-			//bagCountVisible = true;
+			bagCountVisible = true;
 			textArea.GetComponent<textGUI> ().textY += Screen.height;
 			for(int i = 4; i >= 0; i--){
 				Vector2 newPos = new Vector2(0, origY+i*0.05f);
