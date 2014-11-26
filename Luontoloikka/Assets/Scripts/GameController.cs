@@ -71,6 +71,10 @@ public class GameController: MonoBehaviour {
 	
 	private Color invisible;
 	public GUIText selectedText;
+
+	//Additional graphics for tiles
+	public GameObject puddle;
+
 	
 	// Use this for initialization
 	void Start () {
@@ -144,25 +148,6 @@ public class GameController: MonoBehaviour {
 			yellowBag.Add(gt.yellowTileList[tile]);
 			gt.yellowTileList.RemoveAt(tile);
 		}	
-		//Adds prerequisite tiles
-		/*
-		yellowBag.Add(gt.snowTile);
-		yellowBag.Add(gt.snowTile);
-		yellowBag.Add(gt.snowTile);
-		yellowBag.Add(gt.snowTile);
-		yellowBag.Add(gt.snowTile);
-		yellowBag.Add(gt.snowTile);
-		yellowBag.Add(gt.snowTile);
-		yellowBag.Add(gt.snowTile);
-		yellowBag.Add(gt.snowTile);
-		//Shuffles Yellow Bag
-		for (int i = 0; i < yellowBag.Count; i++) {
-			GameObject temp = yellowBag[i];
-			int randomIndex = Random.Range(i, yellowBag.Count);
-			yellowBag[i] = yellowBag[randomIndex];
-			yellowBag[randomIndex] = temp;
-		}
-		*/
 		//Inserts Home tile at random location after 5
 		int index = (int)Random.Range(5, yellowBag.Count);
 		yellowBag.Insert (index, gt.homeTile);
@@ -289,8 +274,9 @@ public class GameController: MonoBehaviour {
 	
 	//FUNCTION ADDS NEW TILES TO THE CENTER OF THE MAP. WHEN ROTATING, CENTER IS NOT MOVED, AND CENTER PIECE IS OVERWRITTEN WITH A NEW ONE
 	public void newTile(GameObject a, bool rotating){
+		string additionalGraphic = "null";
 		if (rotating == false) {
-			//Switch-Case checks if piece that is being added can be attached to previous piece. If not, default attachable piece is used instead (Straight Up or Straight Down)
+			//Switch-Case checks if piece that is being added can be attached to previous piece. If not, default attachable piece is used instead
 			//Next direction is then updated and the location of the center tile is moved
 			entryDirection = nextDirection;
 			switch (nextDirection) {
@@ -343,8 +329,7 @@ public class GameController: MonoBehaviour {
 			int textSelect = Random.Range (0, FlavorList.Count); //Selects random flavor text task from list
 			ct.flavorText = FlavorList [textSelect]; //Assigns new flavor text
 			ct.taskText = TaskList [textSelect]; //Assigns new flavor text
-			addTileGraphic (GraphicList[textSelect]);
-			Debug.Log (GraphicList[textSelect]);
+			additionalGraphic = GraphicList[textSelect];
 			FlavorList.RemoveAt (textSelect); //Removes added flavor text from list
 			TaskList.RemoveAt (textSelect); //Removes added flavor text from list
 			GraphicList.RemoveAt (textSelect); //Removes added flavor text from list
@@ -353,6 +338,8 @@ public class GameController: MonoBehaviour {
 				animateText();
 			}
 			MapUpdate ();
+		}else{
+			Destroy (currentRoadPiece);
 		}
 		
 		//Updates the "central" object in the RotateImage class with new object
@@ -360,18 +347,28 @@ public class GameController: MonoBehaviour {
 		
 		//Adds new tile to center
 		Vector2 pos = map [(int)centerTileX, (int)centerTileY].transform.position;
-		Destroy(map [(int)centerTileX, (int)centerTileY]);//Removes forest
-		map [(int)centerTileX, (int)centerTileY] = Instantiate (a, pos, rotation) as GameObject; // New tile
+		//Destroy(map [(int)centerTileX, (int)centerTileY]);//Removes forest
+		currentRoadPiece = Instantiate (a, pos, rotation) as GameObject;
+		currentRoadPiece.transform.parent = map [(int)centerTileX, (int)centerTileY].transform;
+		//map [(int)centerTileX, (int)centerTileY] = Instantiate (a, pos, rotation) as GameObject; // New tile
+
+		//Adds additional graphics to tile
+		addTileGraphic (additionalGraphic , pos);
 	}
 
-	private void addTileGraphic(string graphicText){
-		switch (graphicText) {
-		
+	private GameObject currentRoadPiece;
+
+	private void addTileGraphic(string graphicText, Vector2 pos){
+
+		switch (graphicText.Substring(0,graphicText.Length-1)) {
 		case "null":
 			break;
-		
+		case "Lammikko":
+			Debug.Log ("Adding puddle.");
+			GameObject b = Instantiate(puddle, pos, rotation) as GameObject;
+			b.transform.parent = currentRoadPiece.transform; 
+			break;
 		}
-	
 	}
 
 	
