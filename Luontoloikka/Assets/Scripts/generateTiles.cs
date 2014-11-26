@@ -115,7 +115,7 @@ public class generateTiles : MonoBehaviour {
 			}
 			else if(c == 0){
 				flavorList.Add(line);
-				tileList.Add (straightUp);
+				tileList.Add (getRoadTile());
 				c = 1;
 			}
 			else if(c == 1){
@@ -128,6 +128,20 @@ public class generateTiles : MonoBehaviour {
 			}
 		}
 	}
+
+	//Randomizes added road piece, prioritizing straight roads over curved ones slightly.
+	private GameObject getRoadTile(){
+		int select = (int)Random.Range (0,4);
+		switch (select) {
+		case 0:
+			return curveLeftDown;
+		case 1:
+			return curveLeftUp;
+		default:
+			return straightUp;
+		}
+	}
+
 	/*
 #if UNITY_EDITOR
 	private void generateFromFile(){

@@ -169,7 +169,6 @@ public class GameController: MonoBehaviour {
 		
 		//Inserts 9 snow tiles at random locations after 5
 		for(int i  = 0; i < 9; i++){
-			Debug.Log("Repetition: " + i);
 			index = (int)Random.Range(5, yellowBag.Count);
 			yellowBag.Insert (index, gt.snowTile);
 		}
@@ -298,28 +297,44 @@ public class GameController: MonoBehaviour {
 			case "up": 
 				centerTileY += 1;
 				if (a.GetComponent<tile> ().hasDown == false) {
-					a = straightUp;
+					if(a.GetComponent<tile> ().type == "curve"){
+						a = curveRightDown;
+					}else{
+						a = straightUp;
+					}
 				}
 				nextDirection = a.GetComponent<tile> ().getDirection ("down");
 				break;
 			case "down": 
 				centerTileY -= 1; 
 				if (a.GetComponent<tile> ().hasUp == false) {
-					a = straightUp;
+					if(a.GetComponent<tile> ().type == "curve"){
+						a = curveRightUp;
+					}else{
+						a = straightUp;
+					}
 				}
 				nextDirection = a.GetComponent<tile> ().getDirection ("up");
 				break;
 			case "left": 
 				centerTileX -= 1; 
 				if (a.GetComponent<tile> ().hasRight == false) {
-					a = straightLeft;
+					if(a.GetComponent<tile> ().type == "curve"){
+						a = curveRightUp;
+					}else{
+						a = straightLeft;
+					}
 				}
 				nextDirection = a.GetComponent<tile> ().getDirection ("right");
 				break;
 			case "right": 
 				centerTileX += 1; 
 				if (a.GetComponent<tile> ().hasLeft == false) {
-					a = straightLeft;
+					if(a.GetComponent<tile> ().type == "curve"){
+						a = curveLeftUp;
+					}else{
+						a = straightLeft;
+					}
 				}
 				nextDirection = a.GetComponent<tile> ().getDirection ("left");
 				break;
