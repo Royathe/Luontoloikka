@@ -19,6 +19,8 @@ public class GameController: MonoBehaviour {
 	public ParticleSystem snowStorm;
 	public ParticleSystem snowing;
 	public GameObject forest; //Basic forest image
+	public GameObject forest2; //Basic forest image
+	public GameObject forest3; //Basic forest image
 	public GameObject straightLeft; //Straight road image
 	public GameObject straightUp; //Straight road image
 	public GameObject curveLeftDown; //Curved road image
@@ -128,14 +130,14 @@ public class GameController: MonoBehaviour {
 			greenBag.Add(gt.greenTileList[tile]);
 			gt.greenTileList.RemoveAt(tile);
 		}
-		//Fills Bag with a random selection of possible green bag texts
+		//Fills Bag with a random selection of possible red bag texts
 		for (int i = 0; i < redBagSize; i++)
 		{
 			int tile = (int)Random.Range(0, gt.redTileList.Count);
 			redBag.Add(gt.redTileList[tile]);
 			gt.redTileList.RemoveAt(tile);
 		}
-		//Fills Bag with a random selection of possible green bag texts
+		//Fills Bag with a random selection of possible yellow bag texts
 		for (int i = 0; i < yellowBagSize; i++)
 		{
 			int tile = (int)Random.Range(0, gt.yellowTileList.Count);
@@ -143,6 +145,7 @@ public class GameController: MonoBehaviour {
 			gt.yellowTileList.RemoveAt(tile);
 		}	
 		//Adds prerequisite tiles
+		/*
 		yellowBag.Add(gt.snowTile);
 		yellowBag.Add(gt.snowTile);
 		yellowBag.Add(gt.snowTile);
@@ -159,10 +162,17 @@ public class GameController: MonoBehaviour {
 			yellowBag[i] = yellowBag[randomIndex];
 			yellowBag[randomIndex] = temp;
 		}
-
+		*/
 		//Inserts Home tile at random location after 5
 		int index = (int)Random.Range(5, yellowBag.Count);
 		yellowBag.Insert (index, gt.homeTile);
+		
+		//Inserts 9 snow tiles at random locations after 5
+		for(int i  = 0; i < 9; i++){
+			Debug.Log("Repetition: " + i);
+			index = (int)Random.Range(5, yellowBag.Count);
+			yellowBag.Insert (index, gt.snowTile);
+		}
 
 		greenBagCount.fontSize = Screen.height/12; //Adjusts text size based on resolution
 		redBagCount.fontSize = Screen.height/12; //Adjusts text size based on resolution
@@ -181,7 +191,7 @@ public class GameController: MonoBehaviour {
 			for (float x = 0; x < map.GetLength(0); x++) 
 			{
 				Vector2 position = new Vector2(x*spacing - offSetX, y*spacing - offSetY + 1);
-				map[(int)x,(int)y] = Instantiate (forest,position,rotation) as GameObject;
+				map[(int)x,(int)y] = Instantiate (getForestTile(),position,rotation) as GameObject;
 				map[(int)x,(int)y].transform.parent = transform;
 			}
 		}
@@ -191,7 +201,7 @@ public class GameController: MonoBehaviour {
 		map [(int)centerTileX, (int)centerTileY] = Instantiate (start, center, rotation) as GameObject; // Center tile
 		nextDirection = "right"; //Sets what direction start piece is pointing in
 		ct.flavorText = "Syksy on jo pitkällä ja pienen karhunpojan olisi aika päästä pesään talviunille. Karhunpoika ei kuitenkaan tiedä reittiä, vaan tarvitsee apuanne sen selvittämiseen. Auttakaa karhu pesään suorittaen matkan varrella vastaan tulevia tehtäviä.	";
-		ct.taskText = "Näpäytä keskiruutua sulkeaksi tämän teksti-ikkunan, ja  näpäytä pussia lisätäksesi uuden laatan.";
+		ct.taskText = "Näpäytä keskiruutua tai teksti-ikkunaa sulkeaksi tämän teksti-ikkunan, ja  näpäytä pussia lisätäksesi uuden laatan.";
 
 		//ct.taskText = "\t";
 		
@@ -225,6 +235,21 @@ public class GameController: MonoBehaviour {
 		yellowBagCount.enabled = false;
 		bagCountVisible = false;
 	}
+
+	//Randomly selects one of available forest tiles to add
+	private GameObject getForestTile(){
+		int select = (int)Random.Range (0,3);
+		switch (select) {
+		case 0:
+			return forest;
+		case 1:
+			return forest2;
+		case 2:
+			return forest3;
+		}
+		Debug.Log ("Error. Adding default forest. Value given: " + select);
+		return forest;
+	}
 	
 	//LOADS FLAVOR TEXTS FROM SELECTED BAG FLAVOR TEXT LIST
 	public void loadText(string color){
@@ -257,6 +282,9 @@ public class GameController: MonoBehaviour {
 		else if(score == 3){Instantiate (snow4, topRightCorner, rotation); score += 1; Instantiate (snowStorm); Instantiate(snowing);StartCoroutine(fadeInAnimation(forestSnowHeavy,4,0.5f));}
 		else if(score == 4){Instantiate (snow5, topRightCorner, rotation); score += 1; Instantiate (snowStorm);}
 		else if(score == 5){Instantiate (snow6, topRightCorner, rotation); score += 1; Instantiate (snowStorm); end = true;}
+		ct.flavorText = "Lumen määrä on kasvanut";
+		ct.taskText = "";
+		animateText ();
 		return end;
 	}
 	
@@ -436,7 +464,7 @@ public class GameController: MonoBehaviour {
 			for (float y = map.GetLength(1)-1; y > -1; y--) 
 			{
 				Vector2 position = new Vector2(x*spacing - offSetX, y*spacing - offSetY + 1);
-				map[(int)x,(int)y] = Instantiate (forest,position,rotation) as GameObject;
+				map[(int)x,(int)y] = Instantiate (getForestTile(),position,rotation) as GameObject;
 				map[(int)x,(int)y].transform.parent = transform;
 			}
 		}else if (xInc < 0){ //MOVING LEFT
@@ -444,7 +472,7 @@ public class GameController: MonoBehaviour {
 			for (float y = map.GetLength(1)-1; y > -1; y--) 
 			{
 				Vector2 position = new Vector2(x*spacing - offSetX, y*spacing - offSetY + 1);
-				map[(int)x,(int)y] = Instantiate (forest,position,rotation) as GameObject;
+				map[(int)x,(int)y] = Instantiate (getForestTile(),position,rotation) as GameObject;
 				map[(int)x,(int)y].transform.parent = transform;
 			}
 			centerTileX += 1;
@@ -457,7 +485,7 @@ public class GameController: MonoBehaviour {
 			for (float x = 0; x < map.GetLength(0); x++) 
 			{
 				Vector2 position = new Vector2(x*spacing - offSetX, y*spacing - offSetY + 1);
-				map[(int)x,(int)y] = Instantiate (forest,position,rotation) as GameObject;
+				map[(int)x,(int)y] = Instantiate (getForestTile(),position,rotation) as GameObject;
 				map[(int)x,(int)y].transform.parent = transform;
 			}
 			centerTileY += 1;
@@ -470,7 +498,7 @@ public class GameController: MonoBehaviour {
 			for (float x = 0; x < map.GetLength(0); x++) 
 			{
 				Vector2 position = new Vector2(x*spacing - offSetX, y*spacing - offSetY + 1);
-				map[(int)x,(int)y] = Instantiate (forest,position,rotation) as GameObject;
+				map[(int)x,(int)y] = Instantiate (getForestTile(),position,rotation) as GameObject;
 				map[(int)x,(int)y].transform.parent = transform;
 			}
 		}
@@ -490,7 +518,7 @@ public class GameController: MonoBehaviour {
 			gameOver = true;
 			StartCoroutine (textAreaAnimation());
 			StartCoroutine (fadeInAnimation(lossbg,12,0.2f));
-			ct.flavorText = "Kotipesän suuaukko on ehtinyt peittyä lumella. Haluatko aloittaa alusta?";
+			ct.flavorText = "Kotipesän suuaukko on ehtinyt peittyä lumella.";
 			ct.taskText = "";
 		}
 	}
