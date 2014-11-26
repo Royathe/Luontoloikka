@@ -61,7 +61,7 @@ public class addTile : MonoBehaviour {
 		int x = (int)gc.centerTileX + xI;
 		int y = (int)gc.centerTileY + yI;
 		bool isForest = false;
-		//Debug.Log (gc.map[x,y].tag);
+		Debug.Log (gc.map[x,y].tag);
 		if (gc.map[x,y].tag == "forest"){
 			isForest = true;
 		}

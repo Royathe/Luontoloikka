@@ -347,13 +347,14 @@ public class GameController: MonoBehaviour {
 		
 		//Adds new tile to center
 		Vector2 pos = map [(int)centerTileX, (int)centerTileY].transform.position;
-		//Destroy(map [(int)centerTileX, (int)centerTileY]);//Removes forest
 		currentRoadPiece = Instantiate (a, pos, rotation) as GameObject;
-		currentRoadPiece.transform.parent = map [(int)centerTileX, (int)centerTileY].transform;
-		//map [(int)centerTileX, (int)centerTileY] = Instantiate (a, pos, rotation) as GameObject; // New tile
+		currentRoadPiece.transform.parent = map [(int)centerTileX, (int)centerTileY].transform; //Sets road as a child object of the forest
 
 		//Adds additional graphics to tile
 		addTileGraphic (additionalGraphic , pos);
+
+		//Untags the forest as a "forest", so no new road pieces can be added to it
+		map [(int)centerTileX, (int)centerTileY].tag = "Untagged";
 	}
 
 	private GameObject currentRoadPiece;
