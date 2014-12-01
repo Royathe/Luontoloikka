@@ -51,7 +51,9 @@ public class addTile : MonoBehaviour {
 
 	private void afterAddition(){
 		bag.RemoveAt(0);
-		
+
+		GameObject.FindGameObjectWithTag ("CenterTile").audio.Play ();
+
 		gc.greenBagCount.text = "" + gc.greenBag.Count;
 		gc.redBagCount.text = "" + gc.redBag.Count;
 		gc.yellowBagCount.text = "" + gc.yellowBag.Count;
