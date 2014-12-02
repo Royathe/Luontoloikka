@@ -112,7 +112,6 @@ public class GameController: MonoBehaviour {
 		else if(staticVariables.gameSize == "test"){
 			greenBagSize = 1;
 			redBagSize = 1;
-			yellowBagSize = 0;
 		}
 		
 		ct = GameObject.FindGameObjectWithTag ("CenterTile").GetComponent<centerTile> ();
