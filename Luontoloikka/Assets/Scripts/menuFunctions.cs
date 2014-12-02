@@ -28,9 +28,11 @@ public class menuFunctions : MonoBehaviour {
 			mc.showNewGameOptions();
 		}
 		else if (function == "startGame"){
+			LoadingScreen.show();
 			Application.LoadLevel ("Main");
 		}
 		else if(function == "return"){
+			LoadingScreen.show();
 			Application.LoadLevel("Menu");
 		}
 		

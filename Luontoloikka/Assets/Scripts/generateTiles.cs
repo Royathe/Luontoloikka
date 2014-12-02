@@ -85,7 +85,7 @@ public class generateTiles : MonoBehaviour {
 
 		foreach (string line in linesFromfile)
 		{
-			Debug.Log(c + " :c Var --- "+"LINE: " + line);
+			//Debug.Log(c + " :c Var --- "+"LINE: " + line);
 			if(line[0] == 'V' && line[1] == '\t'){
 				flavorList = GTFlavorList;
 				taskList = GTTaskList;

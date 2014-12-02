@@ -47,12 +47,14 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\GameController.cs" />
+     <Compile Include="Assets\Scripts\LoadingScreen.cs" />
      <Compile Include="Assets\Scripts\MenuController.cs" />
      <Compile Include="Assets\Scripts\ParticleSortingLayer.cs" />
      <Compile Include="Assets\Scripts\addTile.cs" />
      <Compile Include="Assets\Scripts\animators.cs" />
      <Compile Include="Assets\Scripts\centerTile.cs" />
      <Compile Include="Assets\Scripts\checkBox.cs" />
+     <Compile Include="Assets\Scripts\forest.cs" />
      <Compile Include="Assets\Scripts\generateTiles.cs" />
      <Compile Include="Assets\Scripts\menuFunctions.cs" />
      <Compile Include="Assets\Scripts\rotateImage.cs" />

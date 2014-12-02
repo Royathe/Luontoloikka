@@ -74,6 +74,15 @@ public class GameController: MonoBehaviour {
 
 	//Additional graphics for tiles
 	public GameObject puddle;
+	public GameObject smallPuddle;
+	public GameObject swamp;
+	public GameObject crow;
+	public GameObject moose;
+	public GameObject bush;
+	public GameObject log;
+	public GameObject ditch;
+	public GameObject largeDitch;
+	public GameObject cave;
 
 	
 	// Use this for initialization
@@ -218,6 +227,9 @@ public class GameController: MonoBehaviour {
 		redBagCount.enabled = false;
 		yellowBagCount.enabled = false;
 		bagCountVisible = false;
+
+		additionalGraphic = "null";
+		hasSnow = false;
 	}
 
 	//Randomly selects one of available forest tiles to add
@@ -260,7 +272,7 @@ public class GameController: MonoBehaviour {
 	//FUNCTION ADDS SNOW UNTO HOME CAVE IN INCREASING AMOUNTS UP TO 6 TIMES
 	public bool addSnow(){
 		bool end = false;
-		if(score == 0){Instantiate (snow1, topRightCorner, rotation); score += 1; Instantiate (snowStorm); StartCoroutine(fadeInAnimation(forestSnow,4,0.5f));}
+		if(score == 0){Instantiate (snow1, topRightCorner, rotation); score += 1; Instantiate (snowStorm); snowAnimation();}
 		else if(score == 1){Instantiate (snow2, topRightCorner, rotation); score += 1; Instantiate (snowStorm);}
 		else if(score == 2){Instantiate (snow3, topRightCorner, rotation); score += 1; Instantiate (snowStorm);}
 		else if(score == 3){Instantiate (snow4, topRightCorner, rotation); score += 1; Instantiate (snowStorm); Instantiate(snowing);StartCoroutine(fadeInAnimation(forestSnowHeavy,4,0.5f));}
@@ -272,9 +284,9 @@ public class GameController: MonoBehaviour {
 		return end;
 	}
 	
+	private string additionalGraphic;
 	//FUNCTION ADDS NEW TILES TO THE CENTER OF THE MAP. WHEN ROTATING, CENTER IS NOT MOVED, AND CENTER PIECE IS OVERWRITTEN WITH A NEW ONE
 	public void newTile(GameObject a, bool rotating){
-		string additionalGraphic = "null";
 		if (rotating == false) {
 			//Switch-Case checks if piece that is being added can be attached to previous piece. If not, default attachable piece is used instead
 			//Next direction is then updated and the location of the center tile is moved
@@ -360,13 +372,63 @@ public class GameController: MonoBehaviour {
 	private GameObject currentRoadPiece;
 
 	private void addTileGraphic(string graphicText, Vector2 pos){
-
+		GameObject b;
 		switch (graphicText.Substring(0,graphicText.Length-1)) {
 		case "null":
 			break;
-		case "Lammikko":
+		case "lammikko":
 			Debug.Log ("Adding puddle.");
-			GameObject b = Instantiate(puddle, pos, rotation) as GameObject;
+			b = Instantiate(puddle, pos, rotation) as GameObject;
+			b.transform.parent = currentRoadPiece.transform; 
+			break;
+		case "pienilampi":
+			Debug.Log ("Adding small puddle.");
+			b = Instantiate(smallPuddle, pos, rotation) as GameObject;
+			b.transform.parent = currentRoadPiece.transform; 
+			break;
+		case "suo":
+			Debug.Log ("Adding swamp.");
+			b = Instantiate(swamp, pos, rotation) as GameObject;
+			b.transform.parent = currentRoadPiece.transform; 
+			break;
+		case "harakka":
+			Debug.Log ("Adding crow.");
+			break;
+		case "hirvi":
+			Debug.Log ("Adding moose.");
+			break;
+		case "pensas":
+			Debug.Log ("Adding bush.");
+			b = Instantiate(bush, pos, rotation) as GameObject;
+			b.transform.parent = currentRoadPiece.transform; 
+			break;
+		case "lumi":
+			Debug.Log ("Adding snow.");
+			Instantiate (snowStorm); 
+			snowAnimation();
+			break;
+		case "sade":
+			Debug.Log ("Adding rain.");
+			Instantiate (snowStorm); 
+			break;
+		case "puunrunko":
+			Debug.Log ("Adding adding log.");
+			b = Instantiate(log, pos, rotation) as GameObject;
+			b.transform.parent = currentRoadPiece.transform; 
+			break;
+		case "oja":
+			Debug.Log ("Adding ditch.");
+			b = Instantiate(ditch, pos, rotation) as GameObject;
+			b.transform.parent = currentRoadPiece.transform; 
+			break;
+		case "isooja":
+			Debug.Log ("Adding large ditch.");
+			b = Instantiate(largeDitch, pos, rotation) as GameObject;
+			b.transform.parent = currentRoadPiece.transform; 
+			break;
+		case "luola":
+			Debug.Log ("Adding cave.");
+			b = Instantiate(cave, pos, rotation) as GameObject;
 			b.transform.parent = currentRoadPiece.transform; 
 			break;
 		}
@@ -567,12 +629,30 @@ public class GameController: MonoBehaviour {
 			}
 		}
 	}
-	
+
+	public bool hasSnow;
+	private void snowAnimation(){
+		if(hasSnow == false){
+			GameObject[] snows = GameObject.FindGameObjectsWithTag("forestSnow");
+
+			foreach (GameObject s in snows) {
+				s.GetComponent<SpriteRenderer>().enabled = true;
+				invisible.a = 0;
+				s.GetComponent<SpriteRenderer>().color = invisible;
+				StartCoroutine(fadeInAnimation(s ,4,0.5f));
+			}
+			StartCoroutine(fadeInAnimation(forestSnow,4,0.5f));
+			hasSnow = true;
+		}
+	}
+
+
 	private IEnumerator fadeInAnimation(GameObject snowVersion, float frames, float frameRate){
-		invisible.a = 0;
+		Color fadeColor = new Color (1, 1, 1, 0);
+		fadeColor.a = 0;
 		for(int i = 0; i < frames; i++){
-			invisible.a += (1/frames);
-			snowVersion.GetComponent<SpriteRenderer>().color = invisible;
+			fadeColor.a += (1/frames);
+			snowVersion.GetComponent<SpriteRenderer>().color = fadeColor;
 			yield return new WaitForSeconds (frameRate);
 		}
 	}

@@ -28,5 +28,4 @@ public class animators : MonoBehaviour {
 			yield return new WaitForSeconds (0.02f);
 		}
 	}
-
 }
