@@ -9,6 +9,7 @@ public class GameController: MonoBehaviour {
 	public GameObject lossbg; //Background image for loss screen
 	public GameObject victorybg; //Background grass for victory screen
 	public GameObject exit; //Exit to Menu button
+	public GameObject returnToMenu; //Exit to Menu button
 	public GameObject textArea; //Text Box Image
 	public GameObject homeCave; //Home base image
 	public GameObject start; //Home base image
@@ -162,9 +163,9 @@ public class GameController: MonoBehaviour {
 		int index = (int)Random.Range(5, yellowBag.Count);
 		yellowBag.Insert (index, gt.homeTile);
 
-		//Inserts 9 snow tiles at random locations after 5
+		//Inserts 9 snow tiles at random locations after 7
 		for(int i  = 0; i < 9; i++){
-			index = (int)Random.Range(5, yellowBag.Count);
+			index = (int)Random.Range(7, yellowBag.Count);
 			yellowBag.Insert (index, gt.snowTile);
 		}
 
@@ -299,7 +300,7 @@ public class GameController: MonoBehaviour {
 				centerTileY += 1;
 					if(a.GetComponent<tile> ().type == "curve"){
 						a = curveRightDown;
-					}else{
+					}else if(a.GetComponent<tile> ().type == "straight"){
 						a = straightUp;
 					}
 				nextDirection = a.GetComponent<tile> ().getDirection ("down");
@@ -308,7 +309,7 @@ public class GameController: MonoBehaviour {
 				centerTileY -= 1; 
 					if(a.GetComponent<tile> ().type == "curve"){
 						a = curveRightUp;
-					}else{
+					}else if(a.GetComponent<tile> ().type == "straight"){
 						a = straightUp;
 					}
 				nextDirection = a.GetComponent<tile> ().getDirection ("up");
@@ -579,7 +580,18 @@ public class GameController: MonoBehaviour {
 	}
 	
 	public void endGame(string condition){
+		Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width/2, (float)(textAreaUpLocation * 0.4), 1));
+		Instantiate (returnToMenu,worldPoint,rotation);
 		if (condition == "victory") {
+
+			GameObject[] goar = GameObject.FindGameObjectsWithTag("SnowStorm");
+			foreach (GameObject g in goar){
+				Destroy(g);
+			}
+			if(GameObject.FindWithTag("Leaves") == true){
+				Destroy(GameObject.FindGameObjectWithTag ("Leaves"));
+			}
+
 			victorybg.SetActive (true);
 			gameOver = true;
 			StartCoroutine(textAreaPopUp());
@@ -645,6 +657,7 @@ public class GameController: MonoBehaviour {
 	public bool hasSnow;
 	private void snowAnimation(){
 		if(hasSnow == false){
+			Destroy(GameObject.FindGameObjectWithTag ("Leaves"));
 			GameObject[] snows = GameObject.FindGameObjectsWithTag("forestSnow");
 
 			foreach (GameObject s in snows) {
@@ -685,19 +698,21 @@ public class GameController: MonoBehaviour {
 		
 		if (Input.GetKeyUp (KeyCode.LeftShift)){devEnabler += 1;}
 		if (Input.GetKeyUp (KeyCode.D)){devEnabler += 1;}
+
 		
 		if (devEnabler >= 2) {
 			devEnabled = devEnabled == true ? devEnabled = false : devEnabled = true;
 			devEnabler = 0;
-			GameObject.FindGameObjectWithTag("GreenBag").SendMessage ("speedClick", SendMessageOptions.DontRequireReceiver);
-			GameObject.FindGameObjectWithTag("RedBag").SendMessage ("speedClick", SendMessageOptions.DontRequireReceiver);
-			GameObject.FindGameObjectWithTag("YellowBag").SendMessage ("speedClick", SendMessageOptions.DontRequireReceiver);
 		}
 		
 		if(devEnabled == true){
 			//RESTARTS WITH KEYPAD-ENTER || MOVES AROUND MAP WITH ARROW KEYS || SPACEBAR ADDS NEW TILE || 'R' ROTATES IMAGE
 			if (Input.GetKeyDown (KeyCode.KeypadEnter)){Application.LoadLevel (Application.loadedLevel);}
 			if (Input.GetKeyDown (KeyCode.R)){GameObject.FindGameObjectWithTag("Rotator").SendMessage ("OnTouchDown", SendMessageOptions.DontRequireReceiver); }
+			
+			if (Input.GetKeyDown (KeyCode.V)){endGame("victory");}
+			if (Input.GetKeyDown (KeyCode.L)){endGame("loss");}
+
 			if (Input.GetKeyUp (KeyCode.UpArrow)){centerTileY += 1; MapUpdate();}
 			if (Input.GetKeyUp (KeyCode.DownArrow)){centerTileY -= 1; MapUpdate();}
 			if (Input.GetKeyUp (KeyCode.LeftArrow)){centerTileX -= 1; MapUpdate();}

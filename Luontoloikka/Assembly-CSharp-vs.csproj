@@ -58,6 +58,7 @@
      <Compile Include="Assets\Scripts\generateTiles.cs" />
      <Compile Include="Assets\Scripts\menuFunctions.cs" />
      <Compile Include="Assets\Scripts\rotateImage.cs" />
+     <Compile Include="Assets\Scripts\soundEffects.cs" />
      <Compile Include="Assets\Scripts\staticVariables.cs" />
      <Compile Include="Assets\Scripts\textGUI.cs" />
      <Compile Include="Assets\Scripts\tile.cs" />

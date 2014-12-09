@@ -44,7 +44,7 @@ public class addTile : MonoBehaviour {
 		}
 		
 		#if UNITY_EDITOR //DEVELOPER OVERRIDES
-		//nextClick = 0;
+		nextClick = 0;
 		#endif
 
 	}
@@ -164,8 +164,6 @@ public class addTile : MonoBehaviour {
 		StartCoroutine (rotateBag());
 
 	}
-	
-	public void speedClick(){nextClick = 0;}
 	
 	private IEnumerator rotateBag()
 	{

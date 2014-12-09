@@ -26,10 +26,6 @@ public class generateTiles : MonoBehaviour {
 	public List<string> YTTaskList;
 	public List<string> YTGraphicList;
 
-	//private StreamReader sr;
-
-	//public List<FileInfo> fileList;
-
 	public void Start(){
 		snowTile.GetComponent<tile> ().type = "snow";
 	}

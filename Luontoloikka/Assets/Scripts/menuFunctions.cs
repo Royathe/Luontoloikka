@@ -34,6 +34,9 @@ public class menuFunctions : MonoBehaviour {
 			Application.LoadLevel ("Main");
 		}
 		else if(function == "return"){
+			if(GameObject.FindWithTag("CenterTile") == true){
+				GameObject.FindGameObjectWithTag ("CenterTile").GetComponent<centerTile>().flavorText = "";
+			}
 			LoadingScreen.show();
 			Application.LoadLevel("Menu");
 		}
