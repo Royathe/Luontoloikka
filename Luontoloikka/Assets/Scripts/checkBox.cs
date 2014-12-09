@@ -3,17 +3,18 @@ using System.Collections;
 
 public class checkBox : MonoBehaviour {
 
+	//Variable which defines what option this particular instance of CheckBox selects (Short, Medium, Long)
 	public string option;
-	//private SpriteRenderer sr = GetComponent<SpriteRenderer>().enabled = true;
-	private Transform check;
-	private SpriteRenderer sr;
-	//private bool check;
 
+	//sr is the SpriteRenderer of "checkBoxMark" child object, which shows if the current check box is checked
+	private SpriteRenderer sr;
+
+	//Start goes through all of the the current instance's child objects, and finds the one with the name "checkBoxMark"
+	//It then sets this instance's "sr" variable to the SpriteRenderer of the "checkBoxMark" object.
 	void Start(){
 		foreach (Transform t in transform)
 		{
 			if(t.name == "checkBoxMark"){
-				check = t;
 				sr = t.GetComponent<SpriteRenderer>();
 			}
 		}
@@ -21,6 +22,8 @@ public class checkBox : MonoBehaviour {
 
 	}
 
+	//Update checks if the currently selected game size in Static Variables is the same as the current instance's "option" variable
+	//If it is, the current check box's "checkBoxMark" is shown, indicating that it is selected. If not, it is hidden
 	void Update(){
 		if (staticVariables.gameSize == option) {
 			sr.enabled = true;
@@ -29,22 +32,8 @@ public class checkBox : MonoBehaviour {
 		}
 	}
 
+	//When the touched, the current instance's option is set as the game size in Static Variables
 	public void OnTouchDown(){
 		staticVariables.gameSize = option;
-		/*
-		foreach (Transform t in transform)
-		{
-			if(t.name == "checkBoxMark"){
-
-				if(t.GetComponent<SpriteRenderer>().enabled == false){
-					//t.GetComponent<SpriteRenderer>().enabled = true;
-					staticVariables.gameSize = option;
-				}else{
-					//t.GetComponent<SpriteRenderer>().enabled = false;
-				}
-				break;
-				//t.GetComponent<SpriteRenderer>().enabled = t.GetComponent<SpriteRenderer>().enabled == false ? true : false;
-			}
-		}*/
 	}
 }

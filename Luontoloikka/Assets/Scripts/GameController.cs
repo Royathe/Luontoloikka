@@ -87,6 +87,7 @@ public class GameController: MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+		Screen.sleepTimeout = SleepTimeout.NeverSleep;
 		gameOver = false;
 
 		victorybg.GetComponent<SpriteRenderer>().color = invisible;
@@ -155,11 +156,12 @@ public class GameController: MonoBehaviour {
 			int tile = (int)Random.Range(0, gt.yellowTileList.Count);
 			yellowBag.Add(gt.yellowTileList[tile]);
 			gt.yellowTileList.RemoveAt(tile);
-		}	
+		}
+
 		//Inserts Home tile at random location after 5
 		int index = (int)Random.Range(5, yellowBag.Count);
 		yellowBag.Insert (index, gt.homeTile);
-		
+
 		//Inserts 9 snow tiles at random locations after 5
 		for(int i  = 0; i < 9; i++){
 			index = (int)Random.Range(5, yellowBag.Count);
@@ -210,10 +212,11 @@ public class GameController: MonoBehaviour {
 		worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(0, Screen.height, 10));
 		//Instantiate (exit, worldPoint, rotation);
 		exit.transform.localPosition = worldPoint;
-		
+
 		textArea.transform.localPosition = new Vector2(0, -5);
+		textAreaUpLocation = textArea.GetComponent<textGUI> ().textY;
 		textArea.GetComponent<textGUI> ().textY += Screen.height;
-		
+
 		forestSnow = GameObject.FindGameObjectWithTag ("forestSnow");
 		forestSnowHeavy = GameObject.FindGameObjectWithTag ("forestSnowHeavy");
 		invisible = new Color (1, 1, 1, 0);
@@ -287,30 +290,27 @@ public class GameController: MonoBehaviour {
 	//FUNCTION ADDS NEW TILES TO THE CENTER OF THE MAP. WHEN ROTATING, CENTER IS NOT MOVED, AND CENTER PIECE IS OVERWRITTEN WITH A NEW ONE
 	public void newTile(GameObject a, bool rotating){
 		if (rotating == false) {
+			Debug.Log ("---Road Tile");
 			//Switch-Case checks if piece that is being added can be attached to previous piece. If not, default attachable piece is used instead
 			//Next direction is then updated and the location of the center tile is moved
 			entryDirection = nextDirection;
 			switch (nextDirection) {
 			case "up": 
 				centerTileY += 1;
-				if (a.GetComponent<tile> ().hasDown == false) {
 					if(a.GetComponent<tile> ().type == "curve"){
 						a = curveRightDown;
 					}else{
 						a = straightUp;
 					}
-				}
 				nextDirection = a.GetComponent<tile> ().getDirection ("down");
 				break;
 			case "down": 
 				centerTileY -= 1; 
-				if (a.GetComponent<tile> ().hasUp == false) {
 					if(a.GetComponent<tile> ().type == "curve"){
 						a = curveRightUp;
 					}else{
 						a = straightUp;
 					}
-				}
 				nextDirection = a.GetComponent<tile> ().getDirection ("up");
 				break;
 			case "left": 
@@ -519,7 +519,7 @@ public class GameController: MonoBehaviour {
 			}
 		}
 		//IF MOVING TOWARDS 0,0 ALL COPIED DATA IS SHIFTED ONE SLOT AWAY FROM THE EXPANSION DIRECTION 
-		// -So if moving the left, the map is expanded by one, and all contents are shifter to the right
+		// -So if moving to the left, the map is expanded by one, and all contents are shifted to the right
 		else if (xInc < 0 || yInc < 0) {
 			for (int y = map.GetLength(1)-1; y > -1; y--) {
 				
@@ -582,7 +582,7 @@ public class GameController: MonoBehaviour {
 		if (condition == "victory") {
 			victorybg.SetActive (true);
 			gameOver = true;
-			StartCoroutine (textAreaAnimation());
+			StartCoroutine(textAreaPopUp());
 			StartCoroutine (fadeInAnimation(victorybg,12,0.2f));
 			ct.flavorText = "Viimeinkin omassa l‰mpˆisess‰ kotipes‰ss‰!  Pikkukarhu kiitt‰‰ avusta ja toivottaa mukavaa talvea. N‰hd‰‰n taas kev‰‰ll‰!";
 			ct.taskText = "";
@@ -590,7 +590,7 @@ public class GameController: MonoBehaviour {
 		else if (condition == "loss") {
 			lossbg.SetActive (true);
 			gameOver = true;
-			StartCoroutine (textAreaAnimation());
+			StartCoroutine(textAreaPopUp());
 			StartCoroutine (fadeInAnimation(lossbg,12,0.2f));
 			ct.flavorText = "Kotipes‰n suuaukko on ehtinyt peitty‰ lumella.";
 			ct.taskText = "";
@@ -609,26 +609,39 @@ public class GameController: MonoBehaviour {
 		//float destY = -0.55f;
 		float destY = -2;
 		float origY = -5;
-		if(textArea.transform.position.y == origY){ //LIFTS TEXT AREA
-			bagCountVisible = false;
-			textArea.GetComponent<textGUI> ().textY -= Screen.height;
-			for(int i = 1; i <= 4; i++){
-				Vector2 newPos = new Vector2(0, (destY/4)*i);
-				textArea.transform.localPosition = newPos;
-				yield return new WaitForSeconds (0.05f);
-			}
+		if(textArea.transform.position.y == origY || gameOver == true){ //LIFTS TEXT AREA
+			StartCoroutine(textAreaPopUp());
 		}
 		else if(textArea.transform.position.y == destY){ //DROPS TEXT AREA
-			bagCountVisible = true;
-			textArea.GetComponent<textGUI> ().textY += Screen.height;
-			for(int i = 4; i >= 0; i--){
-				Vector2 newPos = new Vector2(0, origY+i*0.05f);
-				textArea.transform.localPosition = newPos;
-				yield return new WaitForSeconds (0.05f);
-			}
+			StartCoroutine(textAreaPopDown());
+		}
+		yield return new WaitForSeconds (0.01f);
+	}
+	
+	public float textAreaUpLocation;
+	private IEnumerator textAreaPopUp(){
+		float destY = -2;
+		bagCountVisible = false;
+		//textArea.GetComponent<textGUI> ().textY -= Screen.height;
+		textArea.GetComponent<textGUI> ().textY = textAreaUpLocation;
+		for(int i = 1; i <= 4; i++){
+			Vector2 newPos = new Vector2(0, (destY/4)*i);
+			textArea.transform.localPosition = newPos;
+			yield return new WaitForSeconds (0.05f);
+		}
+		
+	}
+	private IEnumerator textAreaPopDown(){
+		float origY = -5;
+		bagCountVisible = true;
+		textArea.GetComponent<textGUI> ().textY += Screen.height;
+		for(int i = 4; i >= 0; i--){
+			Vector2 newPos = new Vector2(0, origY+i*0.05f);
+			textArea.transform.localPosition = newPos;
+			yield return new WaitForSeconds (0.05f);
 		}
 	}
-
+	
 	public bool hasSnow;
 	private void snowAnimation(){
 		if(hasSnow == false){
@@ -667,7 +680,7 @@ public class GameController: MonoBehaviour {
 		}
 
 		#if UNITY_EDITOR //DEVELOPER OVERRIDES
-		devEnabled = true;
+		//devEnabled = true;
 		#endif
 		
 		if (Input.GetKeyUp (KeyCode.LeftShift)){devEnabler += 1;}

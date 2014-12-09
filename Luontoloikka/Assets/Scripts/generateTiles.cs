@@ -26,9 +26,9 @@ public class generateTiles : MonoBehaviour {
 	public List<string> YTTaskList;
 	public List<string> YTGraphicList;
 
-	private StreamReader sr;
+	//private StreamReader sr;
 
-	public List<FileInfo> fileList;
+	//public List<FileInfo> fileList;
 
 	public void Start(){
 		snowTile.GetComponent<tile> ().type = "snow";
@@ -51,33 +51,12 @@ public class generateTiles : MonoBehaviour {
 		if(Resources.Load ("text") as TextAsset != null){
 			androidReadFile(Resources.Load ("text") as TextAsset);
 		}
-		/*
-#if UNITY_STANDALONE_WIN
-		Debug.Log ("RAN UNITY STANDALONE WINDOWS SCRIPT");
-		try{ 
-		DirectoryInfo dir = new DirectoryInfo("Texts");
-		FileInfo[] info = dir.GetFiles("*.txt");
-		foreach (FileInfo f in info) {
-			Debug.Log(f);
-			setFile(f);
-		}
-		}catch(DirectoryNotFoundException){
-			Application.LoadLevel("Menu");
-		}
-#endif
-*/
 	}
 	private List<string> flavorList;
 	private List<string> taskList;
 	private List<string> graphicList;
 	private List<GameObject> tileList;
-	/*
-	private void setFile(FileInfo f){
-		try{ sr = new StreamReader ("Texts/" + f.ToString (), System.Text.Encoding.Unicode);
-		}catch(DirectoryNotFoundException){Debug.Log("Directory Not Found");Application.LoadLevel("Menu");}
-		generateFromFile ();
-	}
-*/
+
 	private void androidReadFile(TextAsset textFile){
 
 		string[] linesFromfile = textFile.text.Split("\n"[0]);
@@ -141,79 +120,4 @@ public class generateTiles : MonoBehaviour {
 			return straightUp;
 		}
 	}
-
-	/*
-#if UNITY_EDITOR
-	private void generateFromFile(){
-		int c = 0;
-		string line = sr.ReadLine();
-
-		while(c < 5 && !sr.EndOfStream){
-			if(line[0] == 'V' && line[1] == '\t'){
-				flavorList = GTFlavorList;
-				taskList = GTTaskList;
-				tileList = greenTileList; 
-				c = 0;
-				
-				while( c < 50 && !sr.EndOfStream){
-					line = sr.ReadLine();
-					if(line[0] == 'P' && line[1] == '\t'){break;}
-					flavorList.Add(line);
-					
-					line = sr.ReadLine();
-					if(line == "\t"){line = "";}
-					taskList.Add(line);
-					c++;
-					
-					line = sr.ReadLine();
-					tileList.Add (straightUp);
-				}
-			}
-			Debug.Log("LINE: " + line);
-			if(line[0]  == 'P' && line[1] == '\t'){
-				flavorList = RTFlavorList;
-				taskList = RTTaskList;
-				tileList = redTileList; 
-				c = 0;
-				
-				while( c < 50 && !sr.EndOfStream){
-					line = sr.ReadLine();
-					if(line[0] == 'K' && line[1] == '\t'){break;}
-					flavorList.Add(line);
-					
-					line = sr.ReadLine();
-					if(line == "\t"){line = "";}
-					taskList.Add(line);
-					c++;
-					
-					line = sr.ReadLine();
-					tileList.Add (straightUp);
-				}
-			}
-			Debug.Log("LINE: " + line);
-			if(line[0]  == 'K' && line[1] == '\t'){
-				flavorList = YTFlavorList;
-				taskList = YTTaskList;
-				tileList = yellowTileList; 
-				c = 0;
-				
-				while(!sr.EndOfStream){
-					line = sr.ReadLine();
-					flavorList.Add(line);
-					
-					line = sr.ReadLine();
-					if(line == "\t"){line = "";}
-					taskList.Add(line);
-					c++;
-					
-					line = sr.ReadLine();
-					tileList.Add (straightUp);
-				}
-			}
-			c++;
-		}
-		sr.Dispose ();
-	}
-#endif
-*/
 }

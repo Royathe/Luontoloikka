@@ -16,7 +16,6 @@ public class textGUI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
 		float textAdjustment = 600 / textY;
 		textY = Screen.height / textAdjustment; //Adjusts position of text incase the resolution height is different than 600
 
@@ -27,6 +26,9 @@ public class textGUI : MonoBehaviour {
 		style.wordWrap = true;
 		style.normal.textColor = Color.white;
 		ct = GameObject.FindGameObjectWithTag ("CenterTile").GetComponent<centerTile> ();
+
+		GameController gc = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ();
+		gc.textAreaUpLocation = textY;
 
 	}
 

@@ -44,7 +44,7 @@ public class addTile : MonoBehaviour {
 		}
 		
 		#if UNITY_EDITOR //DEVELOPER OVERRIDES
-		nextClick = 0;
+		//nextClick = 0;
 		#endif
 
 	}
@@ -75,6 +75,7 @@ public class addTile : MonoBehaviour {
 			clickDelay = Time.time + nextClick;
 			if(enabled == true){
 				if (bag [0].GetComponent<tile> ().type == "snow") { //ADDS SNOW
+					Debug.Log ("---Snow Tile");
 					afterAddition();
 					if(gc.addSnow() == true){
 						enabled = false;
@@ -82,6 +83,7 @@ public class addTile : MonoBehaviour {
 						gc.endGame("loss");
 					}
 				}else if (bag [0].GetComponent<tile> ().type == "home"){
+					Debug.Log ("---Home Tile");
 					gc.newTile(bag[0] , false);
 					afterAddition();
 					enabled = false;

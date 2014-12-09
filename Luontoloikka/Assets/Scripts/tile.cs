@@ -8,8 +8,6 @@ public class tile : MonoBehaviour {
 	public bool hasUp;
 	public bool hasDown;
 	public string type;
-	//public string flavorText;
-	//public string taskText;
 
 	public string getDirection(string entryDir){
 		string exitDir; //Exit direction of tile
@@ -21,25 +19,4 @@ public class tile : MonoBehaviour {
 
 		return exitDir;
 	}
-	/*
-	// Use this for initialization
-	void Start () {
-
-	}
-
-	public string getFlavorText(){
-		return flavorText;
-	}
-
-	public void assignTexts(string Flavor, string Task){
-		//Debug.Log (Flavor + " : " + this);
-		this.flavorText = Flavor;
-		this.taskText = Task;
-		//Debug.Log (flavorText);
-	}
-
-	// Update is called once per frame
-	void Update () {
-	
-	}*/
 }
